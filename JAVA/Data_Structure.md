@@ -50,10 +50,15 @@ System.exit(1); //프로그램 종료
 ```
 ### 두 문자열의 동일성 비교
 str1.equals(str2) -> 두 문자열의 값이 동일하면 true, 두 값이 다르면 false  
+str1.equalsIgnooreCas(str2) → 두 문자열의 대소문자를 무시하고 동일한지 판단, 출력값은 위와 같음.    
 ```java
 if( name[j].compareTo( names[j+1] ) > 0 ) //첫번째 비교대상의 사전식 영어 순서가 더 높으면
 if( name[j].compareTo( names[j+1] ) == 0 ) //두 문자열의 사전식 영어 크기가 동일하면( a == a)
 if( name[j].compareTo( names[j+1] ) < 0 ) //두번째 대상의 사전식 영어 순서가 더 높으면
+```
+### text file 출력하기
+```java
+PrintWriter out = new PrintWriter( new FileWriter(fileName) ); 
 ```
 
 
