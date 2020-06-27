@@ -13,7 +13,7 @@
 변수명 변경할 때 Refactor 사용해주면 코드상에 존재하는 같은 변수명이 한번에 같이 바뀐다 :thumbsup:  
 
 Q. import 에러가 났는데 무엇을 import 해야할 지 모르겠다면?  
-A. Source -> Organize Imports 해주면 자동으로 불러와진다!  
+A. *Source - Organize Imports* 해주면 자동으로 불러와진다!  
 
 ## 배열
 ```java
