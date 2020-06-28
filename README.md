@@ -6,3 +6,7 @@
 ## JAVA
 
 * [자료구조](https://github.com/nyong-lab/TIL/blob/master/JAVA/Data_Structure.md)
+
+## Algorithm
+
+* [버블정렬](https://github.com/nyong-lab/TIL/blob/master/Algorithm/Bubble_Sort.md)
