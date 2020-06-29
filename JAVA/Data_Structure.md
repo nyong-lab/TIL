@@ -60,6 +60,61 @@ if( name[j].compareTo( names[j+1] ) < 0 ) //두번째 대상의 사전식 영어
 ```java
 PrintWriter out = new PrintWriter( new FileWriter(fileName) ); 
 ```
+### String Class 기본 메서드
+* 문자열 동일성 검사
+**boolean, equals(String)**  
+```java
+String str1 = "java";
+String str2 = "Java";
+boolean equals = str1.equals(str2); //대소문자 다르므로 두 문자열이 다르다 -> false
+boolean equalsIgnoreCase = str1.equals(str2); //대소문자를 무시하므로 두 문자열은 같다 -> ture
+```
+* 문자열 사전식 순서
+**int, compareTo(String)**
+```java
+String str1 = "absolute";
+Stirng str2 = "base";
+int result = str1.compareTo(str2); //str1의 사전식 크기가 더 크다(result = 양수)
+```
+* 문자열 길이
+**int, length()**
+```java
+String str = "abcdef";
+int length = str.length(); //문자열은 총 6개의 문자로 이루어져 있음 -> length = 6
+```
+* 특정 위치의 문자
+**char, charAt(int)**
+```java
+String str = "ABCDEFG";
+char ch = str.charAt(2); //(0번째부터 세므로)문자열의 두번째 자리에는 C가 있음.
+```
+* 지정한 문자의 위치 검색
+**int, indexOf(char)**
+```java
+String str = "abcdef";
+int index = str.indexOf("d"); //d는 str의 세번째 자리에 존재하므로 index = 3;
+//만약 d가 없다면 음수 리턴(-1)
+```
+* 지정된 범위의 부분 문자열
+**String, substring(int,int)**
+```java
+String str = "ABCDEF";
+String substr = str.substring(0,2);
+/*
+"ABC"의 결과물이 나올 것 같지만, substring(i,j); 라고 되어있다고 치면
+'i보다는 크거나 같고 j보다는 작다'의 뜻이기 때문에 결론적으로 "AB"가 저장된다.
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
