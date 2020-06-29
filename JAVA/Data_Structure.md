@@ -16,6 +16,7 @@ Q. import 에러가 났는데 무엇을 import 해야할 지 모르겠다면?
 A. *Source - Organize Imports* 해주면 자동으로 불러와진다!  
 
 ## 배열
+
 ```java
 int [] numbers; //numbers라는 배열을 정수형으로 선언
 numbers = new int [10]; //정수가 들어갈 수 있는 열개의 방을 만들어 준다
@@ -23,8 +24,10 @@ int [] numbers = new int [10]; //한줄로 합쳐 표현
 ```
 
 ## 문자열
+
 ### 문자열 출력
 `System.out.println("안녕 : " + java);`
+
 ### 문자열 입력
 ```java
 //키보드로 값 입력
@@ -48,6 +51,7 @@ catch(FileNotFoundException e){
 System.exit(1); //프로그램 종료
 }
 ```
+
 ### 두 문자열의 동일성 비교
 str1.equals(str2) -> 두 문자열의 값이 동일하면 true, 두 값이 다르면 false  
 str1.equalsIgnooreCas(str2) → 두 문자열의 대소문자를 무시하고 동일한지 판단, 출력값은 위와 같음.    
@@ -56,47 +60,48 @@ if( name[j].compareTo( names[j+1] ) > 0 ) //첫번째 비교대상의 사전식 
 if( name[j].compareTo( names[j+1] ) == 0 ) //두 문자열의 사전식 영어 크기가 동일하면( a == a)
 if( name[j].compareTo( names[j+1] ) < 0 ) //두번째 대상의 사전식 영어 순서가 더 높으면
 ```
+
 ### text file 출력하기
 ```java
 PrintWriter out = new PrintWriter( new FileWriter(fileName) ); 
 ```
+
 ### String Class 기본 메서드
-* 문자열 동일성 검사
-**boolean, equals(String)**  
+* 문자열 동일성 검사 `boolean, equals(String)`
 ```java
 String str1 = "java";
 String str2 = "Java";
 boolean equals = str1.equals(str2); //대소문자 다르므로 두 문자열이 다르다 -> false
 boolean equalsIgnoreCase = str1.equals(str2); //대소문자를 무시하므로 두 문자열은 같다 -> ture
 ```
-* 문자열 사전식 순서
-**int, compareTo(String)**
+
+* 문자열 사전식 순서 `int, compareTo(String)`
 ```java
 String str1 = "absolute";
 Stirng str2 = "base";
 int result = str1.compareTo(str2); //str1의 사전식 크기가 더 크다(result = 양수)
 ```
-* 문자열 길이
-**int, length()**
+
+* 문자열 길이 `int, length()`
 ```java
 String str = "abcdef";
 int length = str.length(); //문자열은 총 6개의 문자로 이루어져 있음 -> length = 6
 ```
-* 특정 위치의 문자
-**char, charAt(int)**
+
+* 특정 위치의 문자 `char, charAt(int)`
 ```java
 String str = "ABCDEFG";
 char ch = str.charAt(2); //(0번째부터 세므로)문자열의 두번째 자리에는 C가 있음.
 ```
-* 지정한 문자의 위치 검색
-**int, indexOf(char)**
+
+* 지정한 문자의 위치 검색 `int, indexOf(char)` 
 ```java
 String str = "abcdef";
 int index = str.indexOf("d"); //d는 str의 세번째 자리에 존재하므로 index = 3;
 //만약 d가 없다면 음수 리턴(-1)
 ```
-* 지정된 범위의 부분 문자열
-**String, substring(int,int)**
+
+* 지정된 범위의 부분 문자열 `String, substring(int,int)`
 ```java
 String str = "ABCDEF";
 String substr = str.substring(0,2);
@@ -105,13 +110,37 @@ String substr = str.substring(0,2);
 'i보다는 크거나 같고 j보다는 작다'의 뜻이기 때문에 결론적으로 "AB"가 저장된다.
 ```
 
+## 클래스, 객체, 참조변수
 
+### 클래스
+* 서로 관련있는 데이터들을 하나의 단위로 묶어둔 것  
+* int, double과 같이 하나의 데이터 `타입`이다.  
+> 다만 int,double처럼 Java가 미리 정해놓은 타입이 아니라, 사용자가 정의한 새로운 타입이라는 의미에서  
+> `사용자 정의 타입` 이라고 부르기도 한다.  
+> int 혹은 double형 변수를 선언하고 사용하는 것처럼 Person1형 변수를 선언하고 사용
+```java
+int count = 0;
+Person1 first = new Person1();
+Person1 [] members = new Person1[100];
+```
+* 프리미티브 타입과 클래스의 차이점  
 
+**Primitive Type**  
+```java
+int count = 0;
+//count라는 이름의 정수형 변수가 만들어지고, 그 "안"에 정수값 0이 저장된다.
+```
 
-
-
-
-
+**Class**
+```java
+Person1 first = new Person1();
+//first라는 이름의 변수가 만들어지지만 그 "안"에 사람 이름과 전화번호가 저장되지는 않는다.
+//이름과 전화번호를 저장할 "Person1 객체(Object)"는 new명령으로 따로 만들어야하고,
+//변수 first에는 그 객체의 주소(참조)를 저장할 수 있다.
+```
+> 모든 프리미티브 타입의 변수는 `보통 변수`이다. 즉, 변수 자체에 값이 저장된다.  
+> 프리미티브 타입이 아닌 모든 변수는 `참조 변수`이다.  
+> 즉, 실제 데이터가 저장될 `객체`는 `new 명령`으로 따로 만들어야 하고, 참조변수에는 그 `객체의 주소`를 저장한다!  
 
 
 
