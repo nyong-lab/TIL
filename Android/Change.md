@@ -68,6 +68,109 @@ XML레이아웃으로 화면 형태(부분 레이아웃)을 만드는 것이 일
 
 `View inflate(int resource, ViewGroup root)`  
 inflate()메서드는 첫 번째 파라미터로 XML레이아웃 리소스를, 두번째 파라미터로 부모 컨테이너를 지정한다.  
+`static LayoutInflater LayoutInflater.from(Context context)`  
+getSystemService()메서드를 호출하는 방법을 사용하거나, LayoutInflater클래스의 from()메서드를 호출하여 참조할 수 있다.  
 
 레이아웃 객체화 과정은 앱이 실행될 때(런타임) 레이아웃 XML파일에 정의된 내용들이 메모리에 객체화되기 때문에 매우 중요하며,  
 이 과정을 `인플레이션` 이라고 한다. 명확하게 이해해야함!  
+
+## 여러 화면 만들고 화면 간 전환하기
+
+대부분의 앱은 여러 화면으로 구성되어 있고, 화면을 전환하며 실행된다.  
+화면은 액티비티로 구현되므로, 액티비티를 전환하는 것과 같다.  
+
+### 안드로이드 앱의 기본 구성 요소
+`액티비티(Activity)` `서비스(Service)` `브로드캐스트 수신자(BroadcastReceiver)` `내용 제공자(Content Provider)`  
+앱을 만들어 단말에 설치했을 때 안드로이드 시스템이 이 요소에 대한 정보를 요구한다.  
+`Android Manifest.xml` 파일이 이 정보들을 담고있으며, 외에 다양한 정보가 들어간다.  
+
+`<activity>` 태그는 우리가 만든 액티비티에 대한 정보를 포함하고 있으며, 새로운 액티비티를 만들어 앱에 추가한다면  
+이 매니페스트 파일에 새 액티비티 정보를 추가해야 한다. 그래야 시스템이 새 액티비티에 대한 정보 알 수 있음!  
+
+### 액티비티
+
+`startActivity()` 메서드를 사용하면 소스 코드에서 액티비티를 띄울 수 있다.  
+
+실제로 앱을 만들다보면 단순히 액티비티를 띄워주는 것이 아니라 어떤 액티비티를 띄운 것인지,  
+띄웠던 액티비티로부터 다시 원래의 액티비티로 돌아오면서 응답을 받아 처리하는 코드가 필요해진다.  
+-> `startActivityForResult()` 메서드
+
+```java
+//메인 액티비티 위에 열리는 액티비티
+public class MenuActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(); //Intent 클래스를 사용해 객체를 만듬
+                intent.putExtra("name", "mike"); //name의 값을 부가 데이터로 넣음
+                setResult(RESULT_OK,intent); //응답 보내기
+                finish(); //현재 액티비티 없애기
+            }
+        });
+    }
+}
+```
+`setResult()` 메서드를 호출할 때 인텐트 객체가 파라미터로 전달되며,  
+새로 띄운 액티비티에서 이전 액티비티로 인텐트를 전달하고 싶을 때 사용하는 메서드이다.  
+
+`setResult(응답 코드, 인텐트)`  
+응답 코드와 인텐트는 새 액티비티를 띄운 원래 액티비티에 전달됨.  
+
+```java
+//메인 액티비티
+public class MainActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE_MENU = 101;
+    //새 액티비티 띄울 때 보낼 요청 코드, 마음대로 지정해도 되지만 액티비티가 여러개라면 중복되지 않게 설정!
+    //새 액티비티로부터 응답을 받을 때 다시 전달받을 값. -> 어떤 액티비티로부터 온 응답인지 구분 가능해진다.
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //새로 띄운 액티비티로부터 받은 응답을 처리하는 메서드
+        //requestCode는 액티비티를 띄울 때 전달했던 코드와 같음. 어떤 액티비티로부터 응답을 받은 것인지 구분 가능.
+        //resultCode는 새 액티비티로부터 전달된 응답 코드임. 새 액티비티에서 처리한 결과가 정상인지 아닌지 구분하는데 사용!
+        //intent는 새 액티비티로부터 전달 받은 인텐트. 이 인텐트 안에 새 액티비티의 데이터를 전달할 수 있다. -> putExtra()메서드 이용
+        super.onActivityResult(requestCode, resultCode, data);  
+        
+
+        if(requestCode == REQUEST_CODE_MENU){
+            Toast.makeText(getApplicationContext(),"onActivityResult 메서드 호출됨. 요청 코드 : " + requestCode +
+                    ", 결과 코드 : " + resultCode, Toast.LENGTH_LONG).show();
+
+            if(resultCode == RESULT_OK){
+                String name = data.getStringExtra("name");
+                Toast.makeText(getApplicationContext(),"응답으로 전달된 Name : " + name, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                //인텐트 객체는 액티비티를 띄울 목적으로 사용되며, 액티비티간 데이터 전달하는 데에도 사용.
+                startActivityForResult(intent,REQUEST_CODE_MENU);
+                //새 액티비티 띄우고, 새 액티비티의 응답을 받을 수 있음
+            }
+        });
+    }
+}
+```
+
+### 화면 전환의 과정
+1. 새로운 액티비티 만들기(XML레이아웃 파일 하나, 자바 소스파일 하나)  
+2. 새로운 액티비티의 XML레이아웃 정의하기  
+3. 메인 액티비티에서 새로운 액티비티 띄우기 `startActivityForResult()`  
+4. 새로운 액티비티에서 응답 보내기 `setResult()`  
+5. 응답 처리하기 `onActivityResult()`  
