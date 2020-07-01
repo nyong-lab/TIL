@@ -5,9 +5,9 @@
 
 ## Android
 
-## JAVA
+## Language
 
-* [자료구조](https://github.com/nyong-lab/TIL/blob/master/JAVA/Data_Structure.md)
+* [JAVA](https://github.com/nyong-lab/TIL/blob/master/JAVA/Data_Structure.md)
 
 ## Algorithm
 
