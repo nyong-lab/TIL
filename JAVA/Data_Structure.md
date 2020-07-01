@@ -23,12 +23,12 @@ numbers = new int [10]; //정수가 들어갈 수 있는 열개의 방을 만들
 int [] numbers = new int [10]; //한줄로 합쳐 표현
 ```
 
-## 문자열
+# 문자열
 
-### 문자열 출력
+## 문자열 출력
 `System.out.println("안녕 : " + java);`
 
-### 문자열 입력
+## 문자열 입력
 ```java
 //키보드로 값 입력
 //정수값을 받아오고 싶다면 sc.nextInt 사용, 문자열을 읽어오고 싶다면 sc.next 사용
@@ -52,7 +52,7 @@ System.exit(1); //프로그램 종료
 }
 ```
 
-### 두 문자열의 동일성 비교
+## 두 문자열의 동일성 비교
 str1.equals(str2) -> 두 문자열의 값이 동일하면 true, 두 값이 다르면 false  
 str1.equalsIgnooreCas(str2) → 두 문자열의 대소문자를 무시하고 동일한지 판단, 출력값은 위와 같음.    
 ```java
@@ -61,12 +61,12 @@ if( name[j].compareTo( names[j+1] ) == 0 ) //두 문자열의 사전식 영어 �
 if( name[j].compareTo( names[j+1] ) < 0 ) //두번째 대상의 사전식 영어 순서가 더 높으면
 ```
 
-### text file 출력하기
+## text file 출력하기
 ```java
 PrintWriter out = new PrintWriter( new FileWriter(fileName) ); 
 ```
 
-### String Class 기본 메서드
+## String Class 기본 메서드
 * 문자열 동일성 검사 `boolean, equals(String)`
 ```java
 String str1 = "java";
@@ -110,9 +110,9 @@ String substr = str.substring(0,2);
 'i보다는 크거나 같고 j보다는 작다'의 뜻이기 때문에 결론적으로 "AB"가 저장된다.
 ```
 
-## 클래스, 객체, 참조변수
+# 클래스, 객체, 참조변수
 
-### 클래스
+## 클래스
 * 서로 관련있는 데이터들을 하나의 단위로 묶어둔 것  
 * int, double과 같이 하나의 데이터 `타입`이다.  
 > 다만 int,double처럼 Java가 미리 정해놓은 타입이 아니라, 사용자가 정의한 새로운 타입이라는 의미에서  
@@ -142,10 +142,43 @@ Person1 first = new Person1();
 > 프리미티브 타입이 아닌 모든 변수는 `참조 변수`이다.  
 > 즉, 실제 데이터가 저장될 `객체`는 `new 명령`으로 따로 만들어야 하고, 참조변수에는 그 `객체의 주소`를 저장한다!  
 
+## 배열과 참조변수
+### int [] numbers = new int[8];  
+프리미티브 타입의 배열이라고 하더라도 배열의 각 원소가 프리미티브 타입인 것이지 배열 자체가 프리미티브 타입인 것은 아니다.  
+따라서 배열의 이름 numbers는 참조 변수이다. 8칸을 가진 배열이 실제로 만들어지고, 그 주소가 참조변수 numbers에 저장된다.  
 
+### Person1 [] members = new Person1[8];  
+members는 배열의 이름이므로 당연히 참조 변수이다. 배열의 각 칸은 Person1 타입이다.  
+그런데 Person1은 프리미티브 타입이 아니다. 따라서 배열의 각 칸도 참조 변수이다.  
+즉, 이 상태에서 배열의 각 칸에 다음과 같이 바로 이름과 번호를 저장할 수는 없다.  
 
+```java
+//저장 안됨
+members[2].name = "John";
+members[2].number = "01084394827";
 
+//이렇게 해야함!
+members[2] = new Person1();
+members[2].name = "John";
+members[2].number = "01038372937";
+```
 
+### 값에 의한 호출 : 배열  
 
+```java
+//호출문
+bubbleSort(data,count);
+
+//호출된 메서드
+public static void bubbleSort(int[] data2, int n)
+} 
+```
+
+`1` 호출하는 순간 변수 data의 값이 호출된 메서드의 매개변수 data2로 `복사`된다.  
+`2` 그런데 복사된 값은 배열의 주소이다. 그러므로 data와 data2는 실제로 동일한 배열을 가리키게 된다.  
+`3` 따라서 배열 data2의 내용을 변경하면 배열 data의 내용도 변경된다.  
+
+> 즉, 배열을 매개변수로 넘겨주고 호출된 메서드에서 배열의 값을 수정하면 원본 배열의 값도 수정되는 것은  
+> "값에 의한 호출"의 예외가 아니라 배열의 이름이 참조변수이기 때문에 벌어진 일이다.  
 
 
