@@ -1,6 +1,7 @@
 # 화면 전환하기
 > :blue_book:  
-> Do it Android 2020  
+> [Book] Do it Android 2020  
+> [Youtube] 겜팔이의 안드로이드 세뇌교실  
 
 ## 레이아웃 인플레이션
 
@@ -137,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         //intent는 새 액티비티로부터 전달 받은 인텐트. 이 인텐트 안에 새 액티비티의 데이터를 전달할 수 있다. -> putExtra()메서드 이용
         super.onActivityResult(requestCode, resultCode, data);  
         
-
         if(requestCode == REQUEST_CODE_MENU){
             Toast.makeText(getApplicationContext(),"onActivityResult 메서드 호출됨. 요청 코드 : " + requestCode +
                     ", 결과 코드 : " + resultCode, Toast.LENGTH_LONG).show();
@@ -174,3 +174,103 @@ public class MainActivity extends AppCompatActivity {
 3. 메인 액티비티에서 새로운 액티비티 띄우기 `startActivityForResult()`  
 4. 새로운 액티비티에서 응답 보내기 `setResult()`  
 5. 응답 처리하기 `onActivityResult()`  
+
+## 인텐트
+
+android.content 패키지 안에 정의되어 있다. 앱 구성요소 간에 작업수행을 위한 정보를 전달하는 역할을 한다.  
+액티비티와 액티비티 간 사이의 소통, 액티비티와 서비스 간 사이의 소통 등을 돕는 역할을 한다고 이해하면 됨!  
+
+* 다른 앱 구성요소에 인텐트를 전달할 수 있는 대표적인 메서드  
+
+`startActivity() 또는 startActivityForResult()` : 액티비티를 화면에 띄울 때  
+`startService() 또는 binService()` : 서비스를 시작할 때  
+`broadcastIntent()` : 인텐트 객체를 브로드캐스팅 방식으로 전송할 때  
+
+**이 메서드들을 호출할 때 인텐트가 파라미터로 전달되며,  
+이렇게 전달된 파라미터는 앱 구성 요소인 액티비티, 서비스, 브로드캐스트 수신자로 전달될 수 있다.**  
+
+### 인텐트의 기본 구성 요소
+
+액션(Action), 데이터(Data)  
+: 액션은 수행할 기능, 데이터는 액션이 수행될 대상의 데이터를 의미한다.  
+
+* 액션과 데이터를 사용하는 대표적인 예 
+
+속성|설명
+---|---
+ACTION_DIAL tel:01077881234 | 주어진 전화번호를 이용해 전화걸기 화면을 보여줌  
+ACTION_VIEW tel:01088773628 | 위와 기능 같음. URI값의 유형에 따라 VIEW 액션이 다른 기능을 수행함  
+ACTION_EDIT content://contacts/people/2 | 전화번호부 데이터베이스에 있는 정보 중에서 ID값이 2인 정보를 편집하기 위한 화면을 보여줌  
+ACTION_VIEW content://contacts/people | 전화번호부 데이터베이스의 내용을 보여줌  
+
+만약 `http://` 처럼 특정 포맷을 사용하면, 그 포맷은 등록된 MIME 타입으로 구분한다.  
+MIME 타입은 일반적으로 웹 서버에서 사용하는 MIME 타입과 같다.  
+(http://로 시작하는 문자열은 웹페이지 주소를 나타내는 URL이라고 인식하는 것과 같은)  
+결국, 인텐트 전달 메커니즘도 이렇게 MIME 타입을 구분한 후 설치된 앱들 중에 적절한 것을 찾아 액티비티를 띄워주는 것임.  
+
+* 명시적 인텐트(Explicit Intent)  
+인텐트에 클래스 객체나 컴포넌트 이름을 지정하여 호출할 대상을 확실히 알 수 있는 경우  
+```java
+Intent intent = new Intent(this, NewActivity.class);
+startActivity(intent);
+```
+
+* 암시적 인텐트(Implicit Intent)  
+액션과 데이터를 지정하긴 했지만 호출할 대상이 달라질 수 있는 경우. 주로 앱과 앱간의 소통에 사용한다.  
+MIME 타입에 따라 시스템에서 적절한 다른 앱의 액티비티를 찾은 후 띄우는 방식을 사용한다.  
+```java
+Intent sendIntent = new Intent();
+sendIntent.setAction(Intent.ACTION_CALL);
+startActivity(sendIntent);
+```
+
+**암시적 인텐트는 액션과 데이터로 구성되지만 그 외에도 여러가지 속성을 가지고 있다.**  
+
+`1` 범주 : 액션이 실행되는데 필요한 추가적인 정보 제공  
+`2` 타입 : 인텐트에 들어가는 데이터의 MIME 타입을 명시적으로 지정  
+`3` 컴포넌트 : 인텐트에 사용될 컴포넌트 클래스 이름을 명시적으로 지정한다.  
+-> 새로운 액티비티를 정의하고 그 액티비티의 클래스 객체를 인텐트에 전달하여 실행하는 방법도 컴포넌트를 지정하는 방식과 같음!  
+`4` 부가 데이터 : 인텐트는 추가적인 정보를 넣을 수 있도록 번들 객체를 담고있다.  
+이 객체를 통해 인텐트 안에 더 많은 정보를 넣어 다른 앱 구성요소에 전달할 수 있다.  
+
+```java
+public class MainActivity extends AppCompatActivity {
+    EditText editText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editText = findViewById(R.id.editText);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = editText.getText().toString();
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));
+                startActivity(intent);
+            }
+        });
+
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                ComponentName name = new ComponentName("org.techtown.samplecallintent",
+                        "org.techtown.samplecallintent.MenuActivity");
+                //컴포넌트 이름을 지정할 수 있는 객체 생성
+                //첫번째 파라미터 - 패키지 이름, 두번째 파라미터 - 클래스 이름
+                intent.setComponent(name);
+                //인텐트 객체에 컴포넌트 지정
+                startActivityForResult(intent,101);
+                //액티비티 띄우기
+            }
+        });
+
+    }
+}
+```
