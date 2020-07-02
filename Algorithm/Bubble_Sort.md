@@ -16,8 +16,9 @@ static public void bubbleSort(int n, String [] names, int [] numbers){
 		for(int j=0; j<i; j++){ //j번째와 j+1번째의 요소가 크기 순이 아니면 교환
 			if(numbers[j] > numbers[j+1]){
 				//swap numbers[j] and numbers[j+1]
+				String tmpstr = numbers[j];
 				numbers[j] = numbers[j+1];
-				numbers[j+1] = numbers[j];
+				numbers[j+1] = tmpstr;
 
 				String tmpstr = names[j]; //이름도 함께 바꿔줌
 				names[j] = names[j+1];
