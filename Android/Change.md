@@ -274,3 +274,63 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
+
+## 플래그와 부가 데이터
+
+### 플래그
+
+액티비티는 액티비티 매니저라는 객체에 의해 '액티비티 스택'이라는 것으로 관리된다. 그리고 이 스택은 액티비티를 차곡차곡 쌓아두었다가  
+가장 상위에 있는 액티비티가 없어지면 이전의 액티비티가 다시 화면에 보이게 한다. 이렇게 일반적인 스택 구조를 이용해 액티비티가 관리되기는 하지만,  
+동일한 액티비티를 여러 번 실행한다면 동일한 액티비티가 스택에 여러번 들어가게 되고, 동시에 데이터를 여러 번 접근하거나  
+리소스를 여러번 사용하는 문제가 발생할 수 있다. 이러한 문제들을 해결할 수 있도록 도와주는 것이 `플래그(FLAG)` 이다.  
+
+`FLAG_ACTIVITIY_SINGLE_TOP`  
+액티비티를 생성할 때 이미 생성된 액티비티가 있으면 그 액티비티를 그대로 사용하라는 플래그.  
+
+Q. 화면에 보이는 액티비티가 새로 만들어지지 않고 기존에 있는 것이 보인다면, 시스템에서 전달하는 인텐트 객체는 어떻게 전달받는가?  
+액티비티가 이미 메모리에 객체로 생성되어 있으면, 액티비티를 다시 띄우더라도 `onCreate()` 메서드가 호출되지 않는다.  
+따라서 `onNewIntent()` 메서드를 재정의하여 사용해야 한다. `onNewIntent()` 메서드는 액티비티가 이미 객체로 만들어져 있을 때  
+시스템으로부터 자동으로 호출되며, 파라미터로 인텐트 객체를 전달 받을 수 있다.  
+
+`FLAG_ACTIVITY_NO_HISTORY`  
+처음 이후에 실행된 액티비티는 액티비티 스택에 추가되지 않게하는 플래그.  
+즉, 플래그가 설정되지 않은 경우에는 BACK키를 누르면 이전의 액티비티가 보이지만,  
+이 플래그를 사용하면 항상 맨 처음에 실행되었던 액티비티가 바로 보이게 된다.  
+
+`FLAG_ACTIVITY_CLEAR_TOP`  
+이 액티비티 위에 있는 다른 액티비티를 모두 종료한다.  
+홈 화면과 같ㅇ이 다른 액티비티보다 항상 우선하는 액티비티를 만들 때 유용하게 쓸 수 있음.  
+
+### 부가 데이터
+
+한 액티비티에서 다른 액티비티를 띄울 때 데이터를 전달해야 하는 경우도 있다.  
+가장 간단한 방법은 별도의 클래스를 만든 다음 그 안에 클래스 변수를 만들어 두 개의 화면에서 모두 그 변수를 참조하게 하면 되지만,  
+안드로이드는 **다른 앱에서 내가 만든 화면을 띄울 수도 있기 때문에 변수를 공유하는 방식이 불가능할 수도 있다**  
+따라서, 액티비티를 띄울 때 전달되는 인텐트 안에 부가 데이터를 넣어 전달하는 방법을 권장한다.  
+
+인텐트 안에는 번들객체가 들어있는데, `putExtra()` 메서드와 `get~Extra()` 메서드로 데이터를 넣거나 빼낼 수 있다.  
+번들 객체 안에 넣은 데이터를 부가데이터라고 하며, 시스템에서는 건드리지 않고 다른 앱 구성요소로 전달된다.  
+
+```java
+Intent putExtra(String name, String Value)
+Intent putExtra(String name, int Value)
+Intent putExtra(String name, boolean Value)
+
+String getStringExtra(String name)
+int getIntExtra(String name, int defaultValue)
+boolean getBooleanExtra(String name, boolean defaultValue)
+```
+
+get~ 형태를 가진 메서드는 데이터 값이 없으면 디폴트로 설정한 defaultValue값이 반환되며,  
+객체 자료형의 경우 바이트 배열로 변환하거나, Serializable 인터페이스를 구현하는 객체를 만들어 직렬화한다음 전달해야한다.  
+-> `Serializable` 보다 `Parcelable` 인터페이스를 권장함. 비슷하나 크기가 더 작고 빠르다.  
+
+`Parcelable` 인터페이스 필수 구현 메소드  
+`public abstract int describeContents()`, `public abstract void wirteToParcel(Parcel dest, int flags)`  
+
+> 사실 이 Parcelable 인터페이스 부분이 잘 이해가 안되어서 아직 공부가 더 필요할 것 같다.  
+> 잘 정리해놓은 것 같은 블로그가 있어서 기록용으로 올려둔다. [:airplane:](https://arsviator.blogspot.com/2010/10/parcelable%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-%EC%A0%84%EB%8B%AC-object.html)
+
+
+
+
