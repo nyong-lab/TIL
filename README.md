@@ -17,5 +17,5 @@
 
 ## Circuit
 
-* [사운드](https://github.com/nyong-lab/TIL/blob/master/Circuit/Audio.md)  
-
+* [사운드 회로](https://github.com/nyong-lab/TIL/blob/master/Circuit/Audio.md)  
+* [전원 회로](https://github.com/nyong-lab/TIL/blob/master/Circuit/Power.md)
