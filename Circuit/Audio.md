@@ -20,7 +20,7 @@
 ![DF_PLAYER](https://github.com/nyong-lab/TIL/blob/master/Image/DF_PLAYER.jpg)  
 `RX,TX` 아두이노와 소통하는 부분  
 `DAC_R, DAC_L` A CLASS AMP로 연결되어 증폭 후 스테레오로 출력  
-`SPK_1, SPK_2` 오디오 신호선으로, 두선 다 스피커 하나에 연결해야함. C CLASS AMP로 연결되어 증폭 후 모노로 출력되며 최대 출력은 3W.  
+`SPK_1, SPK_2` 오디오 신호선으로, 두선 다 스피커 하나에 연결해야함. B CLASS AMP로 연결되어 증폭 후 모노로 출력되며 최대 출력은 3W.  
 `BUSY` 재생중일땐 HIGH, 끝나면 LOW. 소리가 재생되고 있는지 아닌지를 판단해주는 포트이다.  
 * 아두이노는 통신레벨 5.0V, DF PLAYER는 3.3V인데 BUSY포트를 사용하면 아두이노가 간혹 DF PLAYER로  
 역신호를 보내는 경우가 있어서 DF PLAYER가 죽는 경우가 생긴다.  
