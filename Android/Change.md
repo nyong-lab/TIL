@@ -335,6 +335,7 @@ get~ 형태를 가진 메서드는 데이터 값이 없으면 디폴트로 설�
 
 앱은 하나의 프로세스 위에서 동작한다.  
 * 프로세스가 하나 실행되고, 그 위에 VM(Vertual Machine, 가상머신)이 만들어지며 그 위에서 앱이 실행된다.  
+
 시스템에서 인텐트를 보내는 방법으로 내가 만든 앱에서 전화앱을 띄울 수 있는데, 이렇게 하면 전화 앱이 별도의 프로세스로 동작하게 된다.  
 그런데 전화 앱에서 Back키를 누르면 다시 내가 만든 앱 화면으로 돌아올 수 있어야 하는데  
 **프로세스는 독립적인 상자와 같아서 프로세스간의 정보 공유가 어렵다.** 그래서 `태스크(Task)` 라는게 있는 것!    
@@ -373,12 +374,140 @@ get~ 형태를 가진 메서드는 데이터 값이 없으면 디폴트로 설�
 </manifest>
 ```
 
+## 액티비티의 수명주기와 SharedPreferences
 
+### 액티비티의 수명주기
 
+액티비티는 처음 실행될 때 메모리에 만들어지는 과정부터 시작해서 실행과 중지,  
+그리고 메모리에서 해제되는 여러 과정의 상태 정보를 갖고 있으며 이런 상태 정보는 시스템이 관리하면서 각각의 상태에 해당하는 메서드를 자동으로 호출한다.  
 
+**<액티비티의 대표적인 상태 정보>**  
+상태|설명
+---|---
+실행(Running)|화면상에 액티비티가 보이면서 실행되어 있는 상태. 액티비티 스택의 최상위에 있으며 포커스를 가지고 있음
+일시정지(Paused)|사용자에게 보이지만 다른 액티비티가 위에 있어 포커스를 받지 못하는 상태(대화상자가 위에 있어 일부가 가려진 상태)
+중지(Stopped)|다른 액티비티에 의해 완전히 가려져 보이지 않는 상태  
 
+이렇게 액티비티의 상태 정보가 변화하는 것을 `액티비티의 수명주기(Life Cycle)` 이라고 하며, 각각에 해당하는 메서드가 자동으로 호출된다.  
 
+상태 메서드|설명
+--------|---
+onCreate()|액티비티가 처음에 만들어졌을 때 호출됨  
+||화면에 보이는 뷰들의 일반적인 상태를 설정하는 부분  
+||이전 상태가 저장되어 있는 경우에는 번들 객체를 참조하여 이전 상태 복원 가능  
+||이 메서드 다음에는 항상 onStart() 메서드가 호출됨  
+onStart()|액티비티가 화면에 보이기 바로 전에 호출됨  
+||액티비티가 화면 상에 보이면 이 메서드 다음에 onResume() 메서드가 호출됨  
+||액티비티가 화면에서 가려지게 되면 이 메서드 다음에 onStop() 메서드가 호출됨  
+onResume()|액티비티가 사용자와 상호작용하기 바로 전에 호출됨  
+onRestart()|액티비티가 중지된 이후에 호출되는 메서드로 다시 시작되기 바로 전에 호출됨  
+||이 메서드 다음에는 항상 onStart() 메서드가 호출됨  
+onPause()|또 다른 액티비티를 시작하려고 할 때 호출됨  
+||저장되지 않은 데이터를 저장소에 저장하거나 애니메이션 중인 작업을 중지하는 등의 기능을 수행하는 메서드  
+||이 메서드가 리턴하기 전에는 다음 액티비티가 시작될 수 없으므로 이 작업은 매우 빨리 수행된 후 리턴되어야 함  
+||액티비티가 이 상태에 들어가면 시스템은 액티비티를 강제 종료할 수 있음   
+onStop()|액티비티가 사용자에게 더 이상 보이지 않을 때 호출됨  
+||액티비티가 소멸되거나 또 다른 액티비티가 화면을 가릴 때 호출됨  
+||액티비티가 이 상태에 들어가면 시스템은 액티비티를 강제 종료할 수 있음  
+onDestroy()|액티비티가 소멸되어 없어지기 전에 호출됨  
+||이 메서드는 액티비티가 받는 마지막 호출이 됨  
+||액티비티가 앱에 의해 종료되거나(finsh()메서드 호출) 시스템이 강제로 종료시키는 경우에 호출될 수 있음  
+||위의 두 가지 경우를 구분할 때 isFinishing()메서드를 이용함  
+||액티비티가 이 상태에 들어가면 시스템은 액티비티를 강제 종료할 수 있음  
 
+### SharedPreferences
+
+앱 안에서 간단한 데이터를 저장하거나 복원할 때 `SharedPreferences` 를 사용할 수 있다.  
+앱 내부에 파일을 하나 만드는데 이 파일 안에서 데이터를 저장하거나 읽어올 수 있게 한다.  
+실제로 파일을 만들 필요 없이 SharedPreferences의 저장, 복원 메서드를 호출하면 된다!  
+
+```java
+public class MainActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE_MENU = 101;
+    EditText NameInput;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        println("onCreate Called");
+
+        NameInput = findViewById(R.id.nameInput);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_MENU);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+       println("onStart Called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        println("onStop Called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        println("onDestroy Called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveState();
+        println("onPause Called, save State");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        restoreState();
+        println("onResume Called, reload State");
+    }
+
+    public void println(String data){
+        Toast.makeText(this,data,Toast.LENGTH_LONG).show();
+        Log.d("LifeCheck",data);
+    }
+
+    public void restoreState(){//설정 정보에 저장된 데이터를 가져와 토스트 메세지로 보여줌
+        SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        if( (pref != null) && (pref.contains("name")) ){
+            String name = pref.getString("name", "");
+            NameInput.setText(name);
+        }
+    }
+
+    protected void saveState(){ //현재 입력상자에 입력된 데이터 저장
+        //데이터를 저장할 때는 SharedPreferences를 사용하며 pref 문자열을 저장소의 이름으로 사용함
+        SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        //SharedPreferences 객체를 사용하려면 getSharedPreferenced() 메서드로 참조
+        SharedPreferences.Editor editor = pref.edit();
+        //데이터를 저장할 수 있도록 edit()메서드를 제공. edit() 메서드를 호출한 후,
+        editor.putString( "name", NameInput.getText().toString() );
+        //put~()메서드로 저장하려는 데이터 설정할 수 있음
+        editor.commit();
+        //설정한 후 commit() 메서드 호출해야 실제로 저장됨
+    }
+
+    protected void clearState(){
+        SharedPreferences pref = getSharedPreferences("pref",Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
+}
+```
 
 
 
