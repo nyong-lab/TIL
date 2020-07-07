@@ -331,6 +331,54 @@ get~ 형태를 가진 메서드는 데이터 값이 없으면 디폴트로 설�
 > 사실 이 Parcelable 인터페이스 부분이 잘 이해가 안되어서 아직 공부가 더 필요할 것 같다.  
 > 잘 정리해놓은 것 같은 블로그가 있어서 기록용으로 올려둔다. [:airplane:](https://arsviator.blogspot.com/2010/10/parcelable%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-%EC%A0%84%EB%8B%AC-object.html)
 
+## 태스크 관리  
+
+앱은 하나의 프로세스 위에서 동작한다.  
+* 프로세스가 하나 실행되고, 그 위에 VM(Vertual Machine, 가상머신)이 만들어지며 그 위에서 앱이 실행된다.  
+시스템에서 인텐트를 보내는 방법으로 내가 만든 앱에서 전화앱을 띄울 수 있는데, 이렇게 하면 전화 앱이 별도의 프로세스로 동작하게 된다.  
+그런데 전화 앱에서 Back키를 누르면 다시 내가 만든 앱 화면으로 돌아올 수 있어야 하는데  
+**프로세스는 독립적인 상자와 같아서 프로세스간의 정보 공유가 어렵다.** 그래서 `태스크(Task)` 라는게 있는 것!    
+태스크는 앱이 어떻게 동작할 지 결정할 때 사용되며, 어떤 화면들이 같이 동작해야 하는지 흐름을 관리할 수 있다.
+
+### 프로세스와 태스크
+
+하나의 프로세스에서 다른 프로세스의 화면을 띄우려면 시스템의 도움이 필요하다.  
+시스템에서 이런 액티비티의 각종 정보를 저장해두기 위해 태스크라는 것을 만들게 된다.  
+시스템이 알아서 태스크를 관리하긴 하지만, 직접 제어해야하는 경우도 있다.  
+
+```java
+//manifest
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.techtown.sampletask">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
+                  android:launchMode="singleTop">
+                  //태스크의 가장 위쪽에 있는 액티비티는 더이상 새로 만들지 않게 됨
+                  //MainActivity쪽으로 전달되는 인텐트는 onNewIntent()메서드로 전달받아야 한다
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+```
+
+
+
+
+
+
+
 
 
 
