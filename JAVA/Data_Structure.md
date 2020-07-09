@@ -191,3 +191,43 @@ public static void bubbleSort(int[] data2, int n)
 객체지향 프로그래밍에서 `객체` 란 `"데이터" + "메서드"` 이다.  
 데이터는 객체의 `정적 속성(ex - 계수와 차수)` 을 표현하며,  
 메서드는 객체의 기능 `동적 속성(ex - x의 값을 주면 자신의 값을 계산해준다)` 을 표현한다.  
+
+## 생성자
+
+```java
+class Term3{
+  int coef;
+  int expo;
+  
+  public Term3(int c,int e){
+    coef = c;
+    expo = e;
+  }
+}
+```
+
+클래스와 동일한 이름을 가지며, return 타입이 없는 메서드를 `생성자(Constructor)` 라고 한다.  
+> new 명령으로 객체가 생성될 때 자동으로 실행된다(호출이 필요하지 않음)  
+> 주 목적은 객체의 데이터 필드값을 초기화하기 위함이다.  
+
+매개변수의 타입과 갯수만 구분할 수 있으면 여러개의 생성자를 가질 수 있다.  
+
+```java
+public Polynomial3(){
+  nTerms = 0;
+  terms = new Term3[100];
+}
+
+public Polynomial3(char name){
+  this.name = name;
+  //받는 매개변수의 이름과 객체에 선언된 데이터(?)의 이름이 같을 경우,
+  //this를 사용해서 이 객체의 데이터라는 것을 명시해줄 수 있다.
+  nTerms = 0;
+  terms = new Term3[100];
+}
+```
+
+생성자가 없을경우 객체를 생성한 후 따로 값을 초기화 해주어야 하지만,  
+생성자를 만들 경우 생성과 초기화가 한번에 가능하다.  
+
+
