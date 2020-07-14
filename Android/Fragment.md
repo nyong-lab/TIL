@@ -115,18 +115,58 @@ public class MainFragment extends Fragment {
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container">
+    //레이아웃에 id속성 추가
 
     <fragment
         android:id="@+id/mainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="org.techtown.fragment.MainFragment"/>
+        //프래그먼트는 뷰와 다르게 뷰를 담고있는 공간만 확보함. 따라서 태그 이름으로 프래그먼트의 이름을 사용할 수 없으며,
+        //name 속성에 새로 만든 MainFragment의 이름을 설정. 
 
 </RelativeLayout>
 
 ```
 
+```java
 
+//메인 
 
+public class MainActivity extends AppCompatActivity {
+    MainFragment mainFragment;
+    MenuFragment menuFragment;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mainFragment = (MainFragment)getSupportFragmentManager().findFragmentById(R.id.mainFragment);
+        //메인 프래그먼트는 메인 XML에 추가되어 있으므로 ID를 사용하여 찾아야함
+        //뷰가 아니므로 FragmentManager 객체의 findFragmentById()메서드를 사용해 찾아야 한다.
+        menuFragment = new MenuFragment();
+        //new 연산자를 사용해 새로운 객체로 만들어 변수에 할당
+    }
+
+    public void onFragmentChanged(int index){
+        if(index == 0){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,menuFragment).commit();
+            //메인 액티비티에서 프래그먼트를 다루기 위해서는 먼저 getFragmentManager()메서드를 호출해 매니저 객체를 참조해야함!
+            //프래그먼트 매니저 객체를 사용할 때는 트랜잭션이 사용됨
+            //replace()메서드의 첫번째 파라미터는 프래그먼트를 담고 있는 레이아웃의 id가 되어야 함
+        } else if(index == 1){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,mainFragment).commit();
+        }
+    }
+
+}
+
+```
+
+`public FragmentManager getFragmentManager()`  
+프래그먼트 매니저는 프래그먼트를 다루는 작업을 해 주는 객체로 프래그먼트 추가, 삭제 또는 교체 등의 작업을 할 수 있게 한다.  
+그런데 이런 작업들은 프래그먼트를 변경할 때 오류가 생기면 다시 원래 상태로 돌릴 수 있어야 하므로 트랜잭션 객체를 만들어 실행한다.  
+트랜잭션 객체는 `beginTransaction()` 메서드를 호출하면 시작되고 `commit()` 메서드를 호출하면 실행된다.  
 
 
