@@ -230,4 +230,57 @@ public Polynomial3(char name){
 생성자가 없을경우 객체를 생성한 후 따로 값을 초기화 해주어야 하지만,  
 생성자를 만들 경우 생성과 초기화가 한번에 가능하다.  
 
+# Static 그리고 Public
 
+## Static
+
+클래스는 실체가 아니므로 클래스의 데이터 필드에 데이터를 저장할 수 없고, 클래스의 멤버 메서드를 실행할 수 없다.  
+new명령으로 해당 클래스 타입의 객체를 만든 후, 그 객체의 데이터를 저장하고, 그 객체의 멤버 메서드를 실행하는 것이다.  
+
+여기에 한가지 `예외` 가 있는데, 그것이 바로 `static` 이다. `static` 멤버는 클래스 안에 실제로 존재하며, 객체에는 존재하지 않는다.  
+
+### Static VS Non-static 
+
+static 멤버는 class 멤버이고, non-static 멤버는 object 멤버이다.  
+
+```java
+
+public class Test {
+  public static int s = 0;
+  public int t = 0;
+
+  public static void print1(){
+    System.out.println("s = " + s);
+  }
+
+  public void print2(){
+    System.out.println("t = " + t);
+  }
+}
+
+public class TestTest {
+  Test test1 = new Test();
+	
+  test1.t = 10;
+  test1.s = 100; //Test.s = 100; 이라고 쓰는것이 더 자연스러움. 이해를 돕기위해 이렇게 쓴 것!
+  test1.print2();
+
+  Test test2 = new Test();
+	
+  test2.print1(); //마찬가지로 Test.print1(); 더 자연스러움!
+  test2.print2();
+}
+
+/* 결과는 t = 10, s = 100, t = 0 이 나온다.
+ * s는 class멤버이므로, A객체에서 값을 바꿔버려도 B객체에서도 바뀐 값이 똑같이 나오는 것!
+ 
+```
+
+### Static 메서드/필드의 용도
+
+1. `main 메서드` 는 반드시 `static` 이어야 함.  
+2. 상수 혹은 클래스당 하나만 유지하고 있으면 되는 값(또는 객체)  
+- (EX) Math.PI, System.out   
+3. 순수하게 기능만으로 정의되는 메서드. 대표적인 예로는 수학 함수들  
+
+[Static에 대해 잘 정리해둔 블로그](https://mangkyu.tistory.com/47)  
