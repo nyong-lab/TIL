@@ -234,6 +234,8 @@ public Polynomial3(char name){
 
 ## Static
 
+[Static에 대해 잘 정리해둔 블로그](https://mangkyu.tistory.com/47)  
+
 클래스는 실체가 아니므로 클래스의 데이터 필드에 데이터를 저장할 수 없고, 클래스의 멤버 메서드를 실행할 수 없다.  
 new명령으로 해당 클래스 타입의 객체를 만든 후, 그 객체의 데이터를 저장하고, 그 객체의 멤버 메서드를 실행하는 것이다.  
 
@@ -278,9 +280,37 @@ public class TestTest {
 
 ### Static 메서드/필드의 용도
 
-1. `main 메서드` 는 반드시 `static` 이어야 함.  
-2. 상수 혹은 클래스당 하나만 유지하고 있으면 되는 값(또는 객체)  
-- (EX) Math.PI, System.out   
-3. 순수하게 기능만으로 정의되는 메서드. 대표적인 예로는 수학 함수들  
+`1` `main 메서드` 는 반드시 `static` 이어야 함.  
+`2` 상수 혹은 클래스당 하나만 유지하고 있으면 되는 값(또는 객체) *(ex) Math.PI, System.out*    
+`3` 순수하게 기능만으로 정의되는 메서드. 대표적인 예로는 수학 함수들  
 
-[Static에 대해 잘 정리해둔 블로그](https://mangkyu.tistory.com/47)  
+## 접근제어자
+
+`public` 클래스 외부에서 접근이 가능하다  
+`private` 클래스 내부에서만 접근이 가능하다  
+`default` 동일 패키지에 있는 다른 클래스에서 접근 가능하다  
+`protected` 동일 패키지의 다른 클래스와 다른 패키지의 하위클래스에서도 접근 가능하다  
+
+### 데이터 캡슐화(data encapsulation/information hiding)
+
+중요한 데이터를 보존하고 보호하기 위함. 모든 데이터 멤버를 private으로 만들고 필요한 경우에 public한 get/set 메서드를 제공한다.  
+이렇게 하면 객체가 제공해주는 메서드를 통하지 않고서는 객체 내부의 데이터에 접근할 수가 없다.  
+
+```java
+
+public class abc {
+  public int a;
+  public int b;
+  
+  public getB(){ //외부에서 데이터를 읽을 수만 있고 쓸 수 없음(getter method)
+    return b;
+  }
+  
+  public setB(int b){ //외부에서 데이터를 써줌(setter method)
+    this.b = b;
+  }
+}
+
+```
+
+
