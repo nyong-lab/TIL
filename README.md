@@ -5,7 +5,7 @@
 
 ## Android
 
-* [화면 전환하기](https://github.com/nyong-lab/TIL/blob/master/Android/Change.md)
+* [화면전환](https://github.com/nyong-lab/TIL/blob/master/Android/Change.md)
 * [프래그먼트](https://github.com/nyong-lab/TIL/blob/master/Android/Fragment.md)
 * [액션바](https://github.com/nyong-lab/TIL/blob/master/Android/ActionBar.md)
 
