@@ -162,3 +162,137 @@ public class MainActivity extends AppCompatActivity {
 
 탭에 글자만 표시했지만, 필요에 따라 아이콘이 보이도록 하거나 아이콘과 글자가 함께 보이도록 만들 수도 있다.  
 
+## 하단 탭 만들기
+
+하단 탭은 BottomNavigationView 위젯으로 만들 수 있다.  
+이 위젯도 머티리얼 라이브러리를 사용하기 때문에 외부 라이브러리를 추가하는 과정을 진행해야한다.  
+하단의 각 탭에는 이미지나 글자가 들어갈 수 있는데, 이 버튼들은 메뉴 XML파일로 만들게 된다.
+
+```java
+//menu_bottom.xml
+
+//@android:drawable은 기본API에 포함된 이미지를 참조할 수 있도록 함
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/tab1"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="이메일"/>
+
+    <item
+        android:id="@+id/tab2"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="정보"/>
+
+    <item
+        android:id="@+id/tab3"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="위치"/>
+
+</menu>
+```
+
+```java
+//activity_main.xml
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    //하단 탭 보여주는 위젯, 화면의 하단에 배치
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:itemBackground="@color/colorPrimary" //탭의 배경색
+        app:itemIconTint="@drawable/item_color" //아이콘 색상
+        app:itemTextColor="@drawable/item_color" //텍스트 색상
+        app:menu="@menu/menu_bottom"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+```java
+//item_color.xml
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:color="#ffffff" />
+    <item android:color="#A1A1A1"  />
+</selector>
+```
+
+```java
+//MainActivity.java
+
+public class MainActivity extends AppCompatActivity {
+
+    Fragment1 fragment1;
+    Fragment2 fragment2;
+    Fragment3 fragment3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        fragment1 = new Fragment1();
+        fragment2 = new Fragment2();
+        fragment3 = new Fragment3();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment1).commit();
+
+        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.tab1 :
+                        Toast.makeText(getApplicationContext(),"첫 번째 탭 선택됨",Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment1).commit();
+
+                        return true;
+
+                    case R.id.tab2 :
+                        Toast.makeText(getApplicationContext(),"두 번째 탭 선택됨",Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment2).commit();
+
+                        return true;
+
+                    case R.id.tab3 :
+                        Toast.makeText(getApplicationContext(),"세 번째 탭 선택됨",Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment3).commit();
+
+                        return true;
+                }
+
+                return false;
+            }
+        });
+    }
+}
+```
+
+
+
+
+
