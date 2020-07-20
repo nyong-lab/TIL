@@ -313,4 +313,108 @@ public class abc {
 
 ```
 
+# 상속
+
+기존에 어떠한 클래스를 가지고있는데, 이 클래스와 `IS-A 관계` 에 있고 자신만의 `새로운 속성` 을 가진 클래스를 만들 필요가 있을 때 사용한다. 
+
+> **[IS-A 관계]**
+> 사람은 이름과 나이, 주소를 가지고 있다. 학생은 사람이다. 따라서 이름과 나이, 주소를 가지고 있으며 학번도 가지고 있다.  
+> 하지만 모든 사람이 학생은 아니고, 학번을 가지고 있는 것은 아니다.  
+
+```java
+public class Computer {
+	
+	public String manufacturer;
+	public String processor;
+	public int ramSize;
+	public int diskSize;
+	public double processorSpeed;
+	
+	public Computer(String man, String proc, int ram, int disk, double procSpeed) {
+		manufacturer = man;
+		processor = proc;
+		ramSize = ram;
+		diskSize = disk;
+		processorSpeed = procSpeed;
+	}
+	
+	public double computePower() {
+		return ramSize * processorSpeed;
+	}
+	
+	public double getRamSize() {
+		return ramSize;
+	}
+	
+	public double getProcessorSpeed() {
+		return processorSpeed;
+	}
+	
+	public int getDiskSize() {
+		return diskSize;
+	}
+	
+	public String toString() {
+		String result = "Manufacturer: " + manufacturer +
+						"\\nCPU: " + processor +
+						"\\nRAM: " + ramSize + " megabytes" +
+						"\\nDisk: " + diskSize + " gigabytes" +
+						"\\nProcessor speed: " + processorSpeed + " gigahertz";
+		
+		return result;
+	}
+
+}
+
+public class Notebook extends Computer {
+
+	/* 컴퓨터 클래스의 데이터, 메서드를 모두 가지고 있게 된다. 눈에 보이지 않을 뿐!
+	 * 컴퓨터는 super class(=base class, parent class)
+	 * 노트북은 sub class(=extended class, child class)
+	 */
+
+}
+```
+
+### 상속과 생성자
+
+자바에서 모든 클래스는 `반드시 생성자` 를 가진다.  
+생성자가 없을 경우 눈에 보이지는 않지만 자동으로 `no-parameter 생성자` 가 만들어짐!  
+만약 생성자가 하나라도 있을 경우 자동으로 만들어지지 않는다.  
+
+모든 서브 클래스의 생성자는 먼저 수퍼클래스의 생성자를 호출한다.  
+`1` super(...)을 통해 명시적으로 호출해 주거나  
+`2` 그렇지 않을 경우에는 자동으로 no-parameter 생성자가 호출된다.  
+
+*흔한 오류 : 수퍼클래스에 no-parameter 생성자가 없는데, 서브클래스의 생성자에서 super(...) 호출을 안해주는 경우*  
+
+```java
+public class Notebook extends Computer {
+	
+	public double screenSize;
+	public double weight;
+	
+	public Notebook(String man, String proc, int ram, int disk, double procSpeed, double screen, double weight) {
+		
+		super(man, proc, ram, disk, procSpeed);
+		/* super(arguments) 
+		 * 수퍼클래스의 생성자 중에서 매개변수 리스트가 일치하는 생성자를 호출한다.
+		 * super()를 호출할 경우 반드시 생성자 내에서 첫 문장이어야 한다.
+		 */
+
+		screenSize = screen;
+		this.weight = weight;
+		
+	}
+	
+	public static void main(String [] args) {
+		
+		Notebook test = new Notebook( "Dell", "i5", 4, 1000, 3.2, 15.6, 1.2 );
+		System.out.println(test.computePower());
+	
+	}
+	
+
+}
+```
 
