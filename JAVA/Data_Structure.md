@@ -418,3 +418,37 @@ public class Notebook extends Computer {
 }
 ```
 
+## Overriding
+
+서브클래스가 수퍼클래스에서 선언된 것과 같은 메서드를 가질때 메서드 오버라이딩이라고 한다.  수퍼클래스에서 사용했었던 메서드에 특정 구현을 부여하는데 사용된다.
+
+```java
+public String toString() {
+
+		//수퍼클래스의 모든 내용을 변경하고 싶다면 처음부터 다시 써주면 된다.
+		String result = "Manufacturer: " + manufacturer +
+										"\\nCPU: " + processor +
+										"\\nRAM: " + ramSize + " megabytes" +
+										"\\nDisk: " + diskSize + " gigabytes" +
+										"\\nProcessor speed: " + processorSpeed + " gigahertz" +
+										"\\nScreen Size: " + screenSize + " inches" +
+										"\\nWeight: " + weight + " kg";
+	
+		//하지만 수퍼클래스의 내용의 뒷부분에 덧붙히기만 한다면 이런식으로 코드를 작성하는게 깔끔하다.
+		String result = super.toString() +
+							"\\nScreen Size: " + screenSize + " inches" +
+							"\\nWeight: " + weight + " kg";
+		
+		return result;
+	}
+```
+
+# 다형성(Polymorphism)
+
+수퍼클래스 타입의 참조변수가 서브클래스 타입의 객체를 참조할 수 있다.
+
+```java
+Computer theComputer = new Notebook("Bravo", "Intel", 4, 240, 2/4, 15.07.5);
+```
+
+theComputer는 Computer 타입의 변수이면서 실제로는 Notebook 개체를 참조하고 있다. 그리고 두 클래스는 각자의 toString() 메서드를 가지고 있다. 그렇다면 여기서 둘 중 어떤 toString() 메서드가 실행될까? Notebook 클래스의 toString() 메서드가 실행된다. 즉, `동적 바인딩(Dynamic binding)` 이 일어난다.
