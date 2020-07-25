@@ -8,7 +8,7 @@
 
 ### 매니페스트 파일에 들어갈 수 있는 태그 항목
 
-|                        |                    |                      |
+| -                      | -                  | -                    |
 | ---------------------- | ------------------ | -------------------- |
 | <action>               | <instrumentation>  | <provider>           |
 | <activity>             | <intent-filter>    | <receiver>           |
