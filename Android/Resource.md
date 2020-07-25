@@ -8,15 +8,15 @@
 
 ### 매니페스트 파일에 들어갈 수 있는 태그 항목
 
-| 태그 항목              | 태그 항목          | 태그 항목            |
-| ---------------------- | ------------------ | -------------------- |
-| <action>               | <instrumentation>  | <provider>           |
-| <activity>             | <intent-filter>    | <receiver>           |
-| <activity-alias>       | <manifest>         | <service>            |
-| <application>          | <meta-data>        | <uses-configuration> |
-| <category>             | <permission>       | <uses-library>       |
-| <data>                 | <permission-group> | <uses-permission>    |
-| <grant-uri-permission> | <permission-tree>  | <uses-sdk>           |
+|                          |                      |                        |
+| ------------------------ | -------------------- | ---------------------- |
+| `<action>`               | `<instrumentation>`  | `<provider>`           |
+| `<activity>`             | `<intent-filter>`    | `<receiver>`           |
+| `<activity-alias>`       | `<manifest>`         | `<service>`            |
+| `<application>`          | `<meta-data>`        | `<uses-configuration>` |
+| `<category>`             | `<permission>`       | `<uses-library>`       |
+| `<data>`                 | `<permission-group>` | `<uses-permission>`    |
+| `<grant-uri-permission>` | `<permission-tree>`  | `<uses-sdk>`           |
 
 `<activity>` `<service>` `<receiver>` `<provider>`와 같은 태그들은 앱 구성 요소를 등록하기 위해 사용된다.
 
@@ -45,9 +45,9 @@
 </manifest>
 ```
 
-매니페스트 파일에는 타이틀이나 아이콘과 같은 앱 자체의 정보를 속성으로 지정할 수 있으며, 이미지 리소스로 포함된 정보들은 "@drawable/..."과 같이 참조하여 지정할 수 있다. 이 때 애플리케이션을 의미하는 <application> 태그는 매니페스트 안에 반드시 하나만 있어야 하는데, 나머지 <application> 태그 안의 구성 요소들은 같은 태그가 여러 번 추가되어도 된다. 
+매니페스트 파일에는 타이틀이나 아이콘과 같은 앱 자체의 정보를 속성으로 지정할 수 있으며, 이미지 리소스로 포함된 정보들은 "@drawable/..."과 같이 참조하여 지정할 수 있다. 이 때 애플리케이션을 의미하는 `<application>` 태그는 매니페스트 안에 반드시 하나만 있어야 하는데, 나머지 `<application>` 태그 안의 구성 요소들은 같은 태그가 여러 번 추가되어도 된다. 
 
-메인 액티비티는 항상 다음과 같은 형태로 추가되어야 한다. 즉, 인텐트 필터에 들어가는 정보는 <action> 태그의 경우 MAIN이 되어야 하고 <category> 태그의 경우 LAUNCHER가 되어야 한다.
+메인 액티비티는 항상 다음과 같은 형태로 추가되어야 한다. 즉, 인텐트 필터에 들어가는 정보는 `<action>` 태그의 경우 MAIN이 되어야 하고 `<category>` 태그의 경우 LAUNCHER가 되어야 한다.
 
 ```
 <activity android:name="org.techtown.hello.HelloActivity"
