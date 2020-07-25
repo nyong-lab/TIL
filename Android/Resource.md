@@ -8,7 +8,7 @@
 
 ### 매니페스트 파일에 들어갈 수 있는 태그 항목
 
-|                          |                      |                        |
+| 태그 항목                | 태그 항목            | 태그 항목              |
 | ------------------------ | -------------------- | ---------------------- |
 | `<action>`               | `<instrumentation>`  | `<provider>`           |
 | `<activity>`             | `<intent-filter>`    | `<receiver>`           |
@@ -51,7 +51,7 @@
 
 ```
 <activity android:name="org.techtown.hello.HelloActivity"
-					android:label="@string/app_name">
+			android:label="@string/app_name">
 	<intent-filter>
 		<action android:name="android.intent.action.MAIN"/>
 		<category android:name="android.intent.category.LAUNCHER"/>
