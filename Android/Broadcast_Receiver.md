@@ -228,3 +228,57 @@ public class SmsActivity extends AppCompatActivity {
 
 단말에서는 SMS문자를 받았을 때 텔레포니(TelePhony) 모듈이 처리하도록 한다. 처리된 정보는 인텐트에 담겨 브로드캐스팅 방식으로 다른 앱에 전달된다. 지금 제작해본 앱도 그중의 하나가 되어 인텐트를 전달받으며, 인텐트를 전달 받았을 때 `onReceive()` 메서드가 자동으로 호출된다.
 
+---
+
+## Sender/Receiver
+
+> [:rocket:이 내용을 공부한 블로그](https://abydos.tistory.com/26)
+
+Application간에 통신하거나 Data를 공유하는 가장 간단한 방법도 Broadcast를 사용하는 것이다. Broadcast를 보내는 Sender와 Receiver로 구성되는데, 서로 직접적인 연관성이 없기 때문에 하나의 Application에서 구현될 수도 있지만 서로 다른 Application에서도 구현할 수 있으며, 1:1뿐만 아니라 1:N의 관계를 가질 수 있다.
+
+### 전송방법
+
+Broadcast는 Context class의 `sendBroadcast()` 와 `sendOrderedBroadcast()` API를 통해서 전송할 수 있다.
+
+```java
+Intent intent = new Intent("com.example.helloworld.TEST");
+intent.putExtra("number", 7);
+intent.putExtra("text", "hello");
+
+sendBroadcast(intent);
+```
+
+`sendBroadcast()` 는 가장 일반적인 전송 방법으로, 위 예제 코드에서는 Action name으로 "com.example.helloworld.TEST"를 사용했다. Broadcast를 수신하기 위해 Receiver에서는 Action name에 해당하는 Intent filter를 추가해야 한다. 
+
+### 수신방법
+
+BroadcastReceiver를 상속받아서 Receiver를 구현하고 등록하면 Broadcast intent를 수신할 수 있다.
+
+```java
+public class HelloReceiver extends BroadcastReceiver {
+   
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        
+        if (action.equals("com.example.helloworld.TEST")) {
+            int num = intent.getIntExtra("number", -1);
+            String str = intent.getStringExtra("text");
+            
+            Toast.makeText(context, "Broadcast : number=" + num
+                    + " text=" + str, Toast.LENGTH_LONG).show();
+        }
+    }
+}
+```
+
+Broadcast Receiver는 일반적으로 manifest file에 선언하는 방식으로 등록된다
+
+```java
+<receiver android:name="com.example.helloworld.HelloReceiver">
+        <intent-filter>
+            <action android:name="com.example.helloworld.TEST" />
+        </intent-filter>
+    </receiver>
+```
+
+하나의 Receiver에는 다수의 Intent filter를 등록할 수 있다.
