@@ -16,6 +16,7 @@
 * [Permission](https://github.com/nyong-lab/TIL/blob/master/Android/Permission.md)
 * [Gradle](https://github.com/nyong-lab/TIL/blob/master/Android/Gradle.md)
 * [Resource](https://github.com/nyong-lab/TIL/blob/master/Android/Resource.md)
+* [Handler/Thread](https://github.com/nyong-lab/TIL/blob/master/Android/Handler.md)
 
 ## Language
 
