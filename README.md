@@ -5,6 +5,8 @@
 
 ## Android
 
+> :blue_book: [Book] Do it Android 2020  
+
 * [Transition](https://github.com/nyong-lab/TIL/blob/master/Android/Change.md)
 * [Fragment](https://github.com/nyong-lab/TIL/blob/master/Android/Fragment.md)
 * [ActionBar](https://github.com/nyong-lab/TIL/blob/master/Android/ActionBar.md)
@@ -19,6 +21,8 @@
 * [Handler/Thread](https://github.com/nyong-lab/TIL/blob/master/Android/Handler.md)
 
 ## Language
+ 
+> :tv: [Online Lecture] 인프런, Java로 배우는 자료구조  
 
 * [JAVA](https://github.com/nyong-lab/TIL/blob/master/JAVA/Data_Structure.md)
 
