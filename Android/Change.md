@@ -1,7 +1,4 @@
 # 화면 전환하기
-> :blue_book:  
-> [Book] Do it Android 2020  
-> [Youtube] 겜팔이의 안드로이드 세뇌교실  
 
 ## 레이아웃 인플레이션
 
