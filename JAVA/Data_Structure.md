@@ -1,6 +1,4 @@
 # Data Structure
-> 인프런 강의  
-> JAVA로 배우는 자료구조
 
 ## Eclipse, JAVA 개발환경
 
