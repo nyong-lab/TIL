@@ -450,3 +450,86 @@ Computer theComputer = new Notebook("Bravo", "Intel", 4, 240, 2/4, 15.07.5);
 ```
 
 theComputer는 Computer 타입의 변수이면서 실제로는 Notebook 개체를 참조하고 있다. 그리고 두 클래스는 각자의 toString() 메서드를 가지고 있다. 그렇다면 여기서 둘 중 어떤 toString() 메서드가 실행될까? Notebook 클래스의 toString() 메서드가 실행된다. 즉, `동적 바인딩(Dynamic binding)` 이 일어난다.
+
+# class Object, Wrapper class
+
+## class Object
+
+클래스 Object는 Java에서 **모든 클래스의 superclass**이다. Java의 모든 클래스는 만들어주지 않아도 이미 equals와 toString 메서드를 가지고 있다. 단, 내 의도대로 작동하지는 않을 것이다(= 오버라이드 해야함)
+
+<class Object의 멤버 메서드>
+
+1. boolean equals(Object obj)
+2. int hashCode()
+3. String toString()
+4. Class<?> getClass()
+
+### toString()
+
+만약 `toString()` 메서드를 따로 만들어주지 않은 클래스의 객체에 대해서 `toString()` 메서드를 호출하면 다음과 같은 String이 반환된다.
+
+- Section3.Test@d716361(클래스 이름@객체의 hash code)
+
+### equals(Object)
+
+Object 클래스의 equals 메서드의 매개변수는 Object 타입이다
+
+```java
+public boolean equals (Object other) {
+
+}
+```
+
+매개변수로 제공된 객체와 자기 자신의 동일성을 검사하며, 의도대로 사용하려면 오버라이드 해야한다.
+
+```java
+//class Person에서 equals 메서드를 override한 예
+
+@Override
+public boolean equals(Object obj){
+	if(obj == this) return true;
+	if(obj == null) return false;
+	if(this.getClass() == obj.getClass()){
+		Person other = (Person) obj;
+		//두 Person 객체가 name이 동일하면 동일하다고 할 것인지, number까지 동일해야 동일하다고 할지는 내가 결정할 문제!
+		return name.equals(other.name) && number.equals(other.number);
+	} else {
+		return false;
+	}
+}
+```
+
+### Class Class
+
+모든 클래스는 하나의 Class 객체를 가진다. 이 객체는 각각의 클래스에 대해서 유일하다. 메서드 `getClass()` 는 Object 클래스가 제공하는 메서드이며, 이 유일한 Class 객체를 반환한다. 만약 앞의 예제에서 `this.getClass() == obj.getClass()` 가 true라면 우리는 비교 대상인 두 객체(this와 obj)가 동일한 클래스의 객체임을 알 수 있다.
+
+## Wrapper class
+
+Java에서 primitive type 데이터와 non-primitive type 데이터, 즉 객체는 근본적으로 다르게 처리된다. 가령 Object 타입의 배열에는 다형성의 원리에 의해서 모든 종류의 객체를 저장할 수 있다. 하지만, int, double, char 등의 primitive type 데이터는 객체가 아니므로 저장할 수 없다.
+
+때때로 primitive type 데이터를 객체로 만들어야 할 경우가 있다. 이럴 때 `Integer, Double, Character` 등의 `wrapper class` 를 이용한다.
+
+기본 타입의 데이터를 하나의 객체로 포장해주는 클래스 : Integer, Double, Boolean 등
+
+```java
+Object [] array = new Object[100];
+int a = 20;
+Integer age = new Integer(a); //wrapping
+array[0] = age;
+int b = age.intValue(); //unwrapping
+System.out.println(b);
+
+* Autoboxing과 Unboxing
+Object [] theArray = new Object[100];
+//JAVA 컴파일러가 자동으로 Integer 객체로 변환해준다
+theArray[0] = 10; 
+//theArray[0]에 저장된 것은 Integer 객체이지만 JAVA 컴파일러가 자동으로 정수로 변환해준다.
+int a = (Integer)theArray[0]; 
+```
+
+데이터 타입간의 변환 기능을 제공
+
+```java
+String str = "1234";
+int d = Integer.parseInt(str);
+```
