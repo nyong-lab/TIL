@@ -21,7 +21,7 @@
 * [Handler/Thread](https://github.com/nyong-lab/TIL/blob/master/Android/Handler.md)
 
 ## Language
- 
+
 > :tv: [Online Lecture] 인프런, Java로 배우는 자료구조  
 
 * [JAVA](https://github.com/nyong-lab/TIL/blob/master/JAVA/Data_Structure.md)
@@ -34,3 +34,6 @@
 
 * [Audio](https://github.com/nyong-lab/TIL/blob/master/Circuit/Audio.md)  
 * [Power](https://github.com/nyong-lab/TIL/blob/master/Circuit/Power.md)
+* [Input](https://github.com/nyong-lab/TIL/blob/master/Circuit/Input.md)
+* [Output](https://github.com/nyong-lab/TIL/blob/master/Circuit/Output.md)
+
