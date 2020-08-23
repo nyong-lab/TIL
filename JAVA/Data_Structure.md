@@ -503,6 +503,8 @@ public boolean equals(Object obj){
 
 모든 클래스는 하나의 Class 객체를 가진다. 이 객체는 각각의 클래스에 대해서 유일하다. 메서드 `getClass()` 는 Object 클래스가 제공하는 메서드이며, 이 유일한 Class 객체를 반환한다. 만약 앞의 예제에서 `this.getClass() == obj.getClass()` 가 true라면 우리는 비교 대상인 두 객체(this와 obj)가 동일한 클래스의 객체임을 알 수 있다.
 
+# 추상클래스와 인터페이스
+
 ## Wrapper class
 
 Java에서 primitive type 데이터와 non-primitive type 데이터, 즉 객체는 근본적으로 다르게 처리된다. 가령 Object 타입의 배열에는 다형성의 원리에 의해서 모든 종류의 객체를 저장할 수 있다. 하지만, int, double, char 등의 primitive type 데이터는 객체가 아니므로 저장할 수 없다.
@@ -532,4 +534,46 @@ int a = (Integer)theArray[0];
 ```java
 String str = "1234";
 int d = Integer.parseInt(str);
+```
+
+## abstract class
+
+- 추상(abstract) 메서드는 선언만 있고 구현이 없는 메서드
+- 추상 메서드를 포함한 클래스는 추상 클래스
+- 추상 메서드와 추상 클래스는 키워드 abstract로 표시
+- 추상 클래스는 객체를 만들 수 없음. 따라서 서브 클래스를 만드는 용도로만 사용됨
+
+```java
+public abstract class Event {
+	
+	public String title;
+	public Event(String title) {
+		this.title = title;
+	}
+
+	public abstract boolean isRelevant(MyDate date);
+
+}
+```
+
+Event를 상속한 oneday, duration, deadline 클래스의 객체는 Event 배열에 들어갈 수 있다. 근데 각각의 객체 안에 들어있는 메서드를 사용하려고 하면 컴파일 오류가 나게 된다. Event 클래스에는 그 메서드가 없기 때문! 해결하기 위해서는 Event 안에 그 메서드를 입력해주면 되지만,  동적 바인딩으로 인해 사실상 그 메서드에 들어가 있는 코드는 사용되지 않는다. 따라서 추상 메서드를 사용한다. 추상 메서드를 사용하면 그 클래스 역시 추상 클래스가 되며, 객체를 생성할 수 없게 된다.
+
+## Interface
+
+- 추상 메서드만을 가진 순수한 추상 클래스
+- static final 데이터 멤버(상수)를 가질 수 있음
+
+```java
+public interface Payable{
+	public double calcSalary();
+	public boolean salaried();
+	public static final double DEDUCTIONS = 25.5;
+}
+
+public class Professor implements Payable{
+	public boolean calcSalary(){...}
+	public boolean salaried(){...}
+}
+
+* Payable 인터페이스를 구현(implements)하는 클래스는 메서드 calcSalary와 salaried를 실제로 구현해야 한다.
 ```
