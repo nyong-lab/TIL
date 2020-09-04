@@ -20,6 +20,8 @@
 * [Resource](https://github.com/nyong-lab/TIL/blob/master/Android/Resource.md)
 * [Handler/Thread](https://github.com/nyong-lab/TIL/blob/master/Android/Handler.md)
 
+> :mag:[search] solve a question
+
 ## Language
 
 > :tv: [Online Lecture] 인프런, Java로 배우는 자료구조  

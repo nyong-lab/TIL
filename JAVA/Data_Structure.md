@@ -577,3 +577,83 @@ public class Professor implements Payable{
 
 * Payable 인터페이스를 구현(implements)하는 클래스는 메서드 calcSalary와 salaried를 실제로 구현해야 한다.
 ```
+
+# Generic Programming
+
+제너릭 프로그래밍은 **데이터 형식에 의존하지 않고**, 하나의 값이 여러 다른 데이터 타입들을 가질 수 있는 기술에 중점을 두어 재사용성을 높일 수 있는 프로그래밍 방식
+
+### Generic한 변수/자료구조
+
+```
+Event ev;` `Event[] events = new Event[capacity];` `Object obj;
+```
+
+### Generic한 알고리즘(method)
+
+```
+Arrays.sort(shapes,0,n);
+```
+
+### Generic 클래스
+
+```
+Generics
+```
+
+## Generics
+
+```java
+//T라는 가상의 타입에 의해서 parameterized된 클래스
+public class Box<T>{ 
+	private T t;
+	public void set(T t){ this.t = t; }
+	public T get(){return t;}
+}
+
+//객체를 생성하는 시점에 가상의 타입 T를 실제하는 타입으로 지정해준다
+Box<Integer> integerBox = new Box<Integer>();
+integerBox.set(new Integer(10));
+
+Box<Event> eventBox = new Box<Event>();
+eventBox.set(new OneDayEvent("dinner", new MyDate(2017,2,10)));
+
+//2개 이상의 type parameter를 가질 수도 있다.
+public class Pair<K,V>{
+	private K key;
+	private V value;
+	public void set(K key, V value){this.key = key; this.value = value}
+	public K getKey(){return key;}
+}
+
+//객체를 생성하는 시점에 가상의 타입 K와 V를 실제하는 타입으로 지정해준다.
+Pair<Strign, Integer> p1 = new Pair<String, Integer>();
+p1.set("Even", 9);
+Pair<String, String> p2 = new Pair<String, String>();
+```
+
+### class Object vs Generics
+
+```java
+//class Object
+//get()의 return type은 Object이므로 반드시 type casting을 해주어야 한다
+public class Box{
+	private Object t;
+	public void set(Object t){this.t = t;}
+	public Object get(){return t;}
+}
+
+Box box = new Box();
+box.set(new Integer(10));
+Integer a = (Integer)box.get();
+
+//Generics
+public class Box<T>{ 
+	private T t;
+	public void set(T t){ this.t = t; }
+	public T get(){return t;}
+}
+
+Box<Integer> box = new Box<Integer>();
+box.set(new Integer(10));
+Integer a = box.get();
+```
