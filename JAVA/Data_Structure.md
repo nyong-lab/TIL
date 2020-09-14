@@ -585,7 +585,9 @@ public class Professor implements Payable{
 ### Generic한 변수/자료구조
 
 ```
-Event ev;` `Event[] events = new Event[capacity];` `Object obj;
+Event ev;
+Event[] events = new Event[capacity];
+Object obj;
 ```
 
 ### Generic한 알고리즘(method)
@@ -626,7 +628,7 @@ public class Pair<K,V>{
 }
 
 //객체를 생성하는 시점에 가상의 타입 K와 V를 실제하는 타입으로 지정해준다.
-Pair<Strign, Integer> p1 = new Pair<String, Integer>();
+Pair<String, Integer> p1 = new Pair<String, Integer>();
 p1.set("Even", 9);
 Pair<String, String> p2 = new Pair<String, String>();
 ```
