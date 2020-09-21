@@ -673,3 +673,80 @@ Integer a = box.get();
 ### 노드
 
 각각의 노드는 **데이터 필드**와 하나 혹은 그 이상의 **링크 필드**로 구성된다. 링크 필드는 **다음 노드**를 참조하며, **첫 번째 노드의 주소는 따로 저장**해야 한다.
+
+```java
+public class Node<T> {
+	public T data;
+	public Node<T> next;
+	
+	public Node(T item) {
+		data = item;
+		next = null;
+	}
+}
+```
+
+```java
+
+public class MySingleLinkedList<T> {
+	
+	public Node<T> head; //첫번째 노드의 주소
+	public int size; //보유하고 있는 노드의 갯수
+	
+	public MySingleLinkedList() {
+		head = null;
+		size = 0;
+	}
+	
+	public void addFirst(T item) {
+		
+		Node<T> newNode = new Node<T>(item); // T : type parameter
+		newNode.next = head;
+		head = newNode;
+		size++;
+		
+	}
+	
+	public void add(int index, T item) // insert
+	{
+		
+		
+	}
+	
+	public void remove(int index) // delete
+	{
+		
+		
+	}
+	
+	public T get(int index)
+	{
+		return null;
+	}
+	
+	public int indexOf(T item) // search
+	{
+		return -1;
+		
+	}
+	
+
+	public static void main(String[] args) {
+		MySingleLinkedList<String> list = new MySingleLinkedList<String>();
+		
+		list.add(0, "Saturday");
+		list.add(1, "Friday");
+		list.add(0, "Monday");
+		list.add(2, "Tuesday");
+		
+		//String str = list.get(2);
+		//list.remove(2);
+		//int pos = list.indexOf("Friday");
+
+	}
+
+}
+```
+
+연결 리스트를 다루는 프로그램에서 가장 주의할 점은 내가 작성한 코드가 일반적인 경우만이 아니라 특수한 혹은 극단적인 경우에도 문제 없이 작동하는지 철저히 확인하는 것이다. 이 경우에는 기존의 연결 리스트의 크기가 0인경우, 즉 head가 null인 경우에도 문제가 없는지 확인해야 한다.
+
