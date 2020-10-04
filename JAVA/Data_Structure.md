@@ -425,17 +425,17 @@ public String toString() {
 
 		//수퍼클래스의 모든 내용을 변경하고 싶다면 처음부터 다시 써주면 된다.
 		String result = "Manufacturer: " + manufacturer +
-										"\\nCPU: " + processor +
-										"\\nRAM: " + ramSize + " megabytes" +
-										"\\nDisk: " + diskSize + " gigabytes" +
-										"\\nProcessor speed: " + processorSpeed + " gigahertz" +
-										"\\nScreen Size: " + screenSize + " inches" +
-										"\\nWeight: " + weight + " kg";
+				"\\nCPU: " + processor +
+				"\\nRAM: " + ramSize + " megabytes" +
+				"\\nDisk: " + diskSize + " gigabytes" +
+				"\\nProcessor speed: " + processorSpeed + " gigahertz" +
+				"\\nScreen Size: " + screenSize + " inches" +
+				"\\nWeight: " + weight + " kg";
 	
 		//하지만 수퍼클래스의 내용의 뒷부분에 덧붙히기만 한다면 이런식으로 코드를 작성하는게 깔끔하다.
 		String result = super.toString() +
-							"\\nScreen Size: " + screenSize + " inches" +
-							"\\nWeight: " + weight + " kg";
+				"\\nScreen Size: " + screenSize + " inches" +
+				"\\nWeight: " + weight + " kg";
 		
 		return result;
 	}
