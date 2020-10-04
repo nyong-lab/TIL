@@ -687,7 +687,6 @@ public class Node<T> {
 ```
 
 ```java
-
 public class MySingleLinkedList<T> {
 	
 	public Node<T> head; //첫번째 노드의 주소
@@ -707,46 +706,129 @@ public class MySingleLinkedList<T> {
 		
 	}
 	
-	public void add(int index, T item) // insert
-	{
+	public void addAfter( Node<T> before, T item) {
+		Node<T> temp = new Node<T>(item);
+		temp.next = before.next;
+		before.next = temp;
+		size++;
+	}
+	
+	public void add(int index, T item) { // insert
 		
+		if(index < 0 || index > size)
+			return;
+		if(index == 0)
+			addFirst(item);
+		else {
+			Node<T> q = getNode(index-1);
+			addAfter(q,item);
+		}
+	
+	}
+	
+	public T removeFirst() {
+		
+		if(head == null)
+			return null;
+		
+		T temp = head.data;
+		head = head.next;
+		size--;
+		return temp;
 		
 	}
 	
-	public void remove(int index) // delete
-	{
+	public T removeAfter( Node<T> before) {
 		
+		if(before.next == null)
+			return null;
+		
+		T temp = before.next.data;
+		before.next = before.next.next;
+		size--;
+		return temp;
 		
 	}
 	
-	public T get(int index)
-	{
-		return null;
+	public T remove(int index) { // delete
+
+		if( index < 0 || index >= size )
+			return null;
+		if(index == 0)
+			return removeFirst();
+		Node<T> prev = getNode(index-1);
+		return removeAfter(prev);	
+		
 	}
 	
-	public int indexOf(T item) // search
-	{
+	public T remove(T item) {
+		
+		Node<T> p = head, q = null;
+		while(p!=null && !p.data.equals(item)) {
+			q = p;
+			p = p.next;
+		}
+		
+		if(p==null)
+			return null;
+		if(q==null)
+			return removeFirst();
+		else 
+			return removeAfter(q);
+		
+	}
+	
+	public Node<T> getNode(int index) {
+		
+		if(index < 0 || index >= size)
+			return null;
+		Node<T> p = head;
+		for(int i=0; i<index; i++)
+			p = p.next;
+		return p;
+		
+	}
+	
+	public T get(int index) {
+		
+		if(index < 0 || index >= size)
+			return null;
+		
+		return getNode(index).data;
+		
+	}
+	
+	public int indexOf(T item) { // search
+	
+	Node<T> p = head;
+	int index = 0;
+	
+	while( p != null ) {
+		if(p.data.equals(item))
+			return index;
+		p = p.next;
+		index++;
+	}
 		return -1;
 		
 	}
 	
-
 	public static void main(String[] args) {
+		
 		MySingleLinkedList<String> list = new MySingleLinkedList<String>();
 		
-		list.add(0, "Saturday");
-		list.add(1, "Friday");
-		list.add(0, "Monday");
+		list.addFirst("Saturday");
+		list.addFirst("Friday");
+		list.add(2, "Monday");
 		list.add(2, "Tuesday");
+		list.remove("Friday");
+		int index = list.indexOf("Saturday");
 		
-		//String str = list.get(2);
-		//list.remove(2);
-		//int pos = list.indexOf("Friday");
-
 	}
-
 }
 ```
 
-연결 리스트를 다루는 프로그램에서 가장 주의할 점은 내가 작성한 코드가 일반적인 경우만이 아니라 특수한 혹은 극단적인 경우에도 문제 없이 작동하는지 철저히 확인하는 것이다. 이 경우에는 기존의 연결 리스트의 크기가 0인경우, 즉 head가 null인 경우에도 문제가 없는지 확인해야 한다.
+- 연결 리스트를 다루는 프로그램에서 가장 주의할 점은 내가 작성한 코드가 일반적인 경우만이 아니라 특수한 혹은 극단적인 경우에도 문제 없이 작동하는지 철저히 확인하는 것이다. 이 경우에는 기존의 연결 리스트의 크기가 0인경우, 즉 head가 null인 경우에도 문제가 없는지 확인해야 한다.
+- 단순연결리스트에 새로운 노드를 `삽입`할 때 삽입할 위치의 바로 앞 노드의 주소가 필요하다. 즉, **어떤 노드의 뒤에 삽입하는 것은 간단하지만**, 반대로 **어떤 노드의 앞에 삽입하는 것은 간단하지 않다**. 어떤 노드를 `삭제`할 때는, 삭제할 노드의 바로 앞 노드의 주소가 필요하다. 삭제할 노드의 주소만으로는 삭제하기 힘들다.
+- 연결리스트의 노드들을 처음부터 순서대로 방문하는 것을 `순회(traverse)` 라고 한다. indexof 메서드는 입력된 데이터 item과 동일한 데이터를 저장한 노드를 찾아서 그 노드번호(index)를 반환한다. 그것을 위해서 연결리스트를 순회한다.
 
